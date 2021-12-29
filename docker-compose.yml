@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  backend:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    image: zord
+    container_name: zord
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 8080:80
+    env_file:
+      - .env.example
+    depends_on: 
+      - db
+  db:
+    image: mysql:5.7
+    container_name: zord-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: zord_db
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_PASSWORD: 1234
+      MYSQL_USER: zord
+  
+networks:
+  maracas:
+    driver: bridge
